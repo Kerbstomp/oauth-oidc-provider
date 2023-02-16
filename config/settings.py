@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'oauth2_provider',
-    'rest_framework'
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -138,8 +140,21 @@ REST_FRAMEWORK = {
     )
 }
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 OAUTH2_PROVIDER = {
+    "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": os.environ.get("OIDC_RSA_PRIVATE_KEY"),
+    "OAUTH2_VALIDATOR_CLASS": "config.oauth_validator.CustomOAuth2Validator",
     # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+    'SCOPES': {
+        'read': 'Read scope', 
+        'write': 'Write scope', 
+        'groups': 'Access to your groups', 
+        "openid": "OpenID Connect scope",},
 }
 
+CORS_ALLOW_ALL_ORIGINS = True

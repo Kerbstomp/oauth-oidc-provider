@@ -1,20 +1,10 @@
 from django.contrib.auth.models import Group
 
-from rest_framework import generics, permissions, serializers
+from rest_framework import generics, permissions
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 
 from .models import User
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'first_name', 'last_name')
-
-
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = ('name')
+from .serializers import UserSerializer, GroupSerializer
 
 
 class UserList(generics.ListCreateAPIView):
